@@ -3,7 +3,7 @@ import json from 'rollup-plugin-json';
 import { terser } from 'rollup-plugin-terser';
 
 import svelte from 'rollup-plugin-svelte';
-//import commonjs from '@rollup/plugin-commonjs';
+import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import css from 'rollup-plugin-css-only';
 
@@ -26,9 +26,9 @@ export default [...['compiler', 'bundler'].map(x => ({
 	input: 'src/main.js',
 	output: {
 		sourcemap: true,
-		format: 'iife',
+		format: 'esm',
 		name: 'app',
-		file: 'public/build/bundle.js'
+		dir: 'build'
 	},
 	plugins: [
 		svelte({
@@ -50,7 +50,7 @@ export default [...['compiler', 'bundler'].map(x => ({
 			browser: true,
 			dedupe: ['svelte']
 		}),
-		//commonjs(),
+		commonjs(),
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
