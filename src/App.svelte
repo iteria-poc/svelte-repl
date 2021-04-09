@@ -1,7 +1,11 @@
 <script>
   import Repl from './Repl.svelte'
+  import { onMount } from 'svelte';
+
+
   let replRef
-  replRef.set({
+  onMount(() => {
+    replRef.set({
 			components: [
 				{
 					name: 'App',
@@ -14,6 +18,7 @@
 				},
 			]
 		})
+  })
 </script>
 
 <Repl
