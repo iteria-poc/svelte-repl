@@ -1,5 +1,6 @@
 <script>
   import Repl from './Repl.svelte'
+  let replRef
   replRef.set({
 			components: [
 				{
