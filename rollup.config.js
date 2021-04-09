@@ -13,7 +13,7 @@ const dev = process.env.ROLLUP_WATCH;
 export default [...['compiler', 'bundler'].map(x => ({
 	input: `src/workers/${x}/index.js`,
 	output: {
-		file: `workers/${x}.js`,
+		file: `public/workers/${x}.js`,
 		format: 'iife'
 	},
 	plugins: [
@@ -28,7 +28,7 @@ export default [...['compiler', 'bundler'].map(x => ({
 		sourcemap: true,
 		format: 'esm',
 		name: 'app',
-		dir: 'build'
+		dir: 'public/build'
 	},
 	plugins: [
 		svelte({
