@@ -10,7 +10,7 @@
 				{
 					name: "App",
 					type: "svelte",
-					source: '<script>\nimport Nested from ".\/Nested.svelte";\n<\/script>\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested />\n\n<b>bold</b>\n<Nested /><style>b {display:block;}</style>',
+					source: '<script>\nimport Nested from ".\/Nested.svelte";\n<\/script>\n\n<b>bold</b>\n<Nested />\n',
 				},
 				{
 					name: "Nested",
