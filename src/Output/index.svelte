@@ -156,6 +156,7 @@
 		{relaxed}
 		{injectedJS}
 		{injectedCSS}
+		on:pointerMoved
 	/>
 </div>
 
