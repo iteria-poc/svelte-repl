@@ -55,7 +55,7 @@ export default [...['compiler', 'bundler'].map(x => ({
 		svelte({
 			compilerOptions: {
 				// enable run-time checks when not in production
-				dev: true
+				dev: dev
 			}
 		}),
 		// we'll extract any component CSS out into
