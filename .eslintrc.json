@@ -9,6 +9,7 @@
     "svelte3/extensions": ["svelte"]
   },
   "env": {
-    "browser": true
+    "browser": true,
+    "node": true
   }
 }
