@@ -1,32 +1,8 @@
 <script>
-    export let pointerLocation;
+    export let text = "";
 
-    let left = 0;
-    let top = 0;
-    let text = "";
-
-    $: if (pointerLocation) {
-        const { iframe, target, loc, event } = pointerLocation;
-        if (loc) {
-            const doc = iframe.contentDocument;
-            if (doc) {
-                let element = iframe;
-                let _left = 0;
-                let _top = 0;
-                while (element && element.tagName !== "BODY") {
-                    _left += element.offsetLeft;
-                    _top += element.offsetTop;
-                    element = element.parentElement;
-                }
-                console.log(loc);
-                left = _left + event.clientX;
-                top = _top + event.clientY;
-                text = `${loc.file} Line: ${loc.line + 1} Column: ${loc.column + 1} Tag: ${target.tagName.toLowerCase()}`;
-            }
-        } else {
-            text = "";
-        }
-    }
+    export let top = 0;
+    export let left = 0;
 </script>
 
 {#if text}
