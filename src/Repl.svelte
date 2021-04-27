@@ -7,6 +7,9 @@
 	import Output from './Output/index.svelte';
 	import Bundler from './Bundler.js';
 	import { is_browser } from './env.js';
+	import Tippy from './Tippy.svelte';
+import calculateText from './helpers/calculateText';
+import calculatePosition from './helpers/calculatePosition';
 
 	export let workersUrl;
 	export let packagesUrl = 'https://unpkg.com';
@@ -78,7 +81,7 @@
 
 	const compile_options = writable({
 		generate: 'dom',
-		dev: false,
+		dev: true,
 		css: false,
 		hydratable: false,
 		customElement: false,
@@ -88,6 +91,7 @@
 
 	let module_editor;
 	let output;
+	let eventDetail = null;
 
 	let current_token;
 	async function rebundle() {
@@ -226,6 +230,9 @@
 </style>
 
 <div class="container" class:orientation>
+	{#if eventDetail}
+		<Tippy {...calculatePosition(eventDetail)} text={calculateText(eventDetail)} />
+	{/if}
 	<SplitPane
 		type="{orientation === 'rows' ? 'vertical' : 'horizontal'}"
 		pos="{fixed ? fixedPos : orientation === 'rows' ? 50 : 60}"
@@ -237,7 +244,7 @@
 		</section>
 
 		<section slot=b style='height: 100%;'>
-			<Output {svelteUrl} {workersUrl} {status} {embedded} {relaxed} {injectedJS} {injectedCSS}/>
+			<Output on:pointerMoved={e => (eventDetail = e.detail)} {svelteUrl} {workersUrl} {status} {embedded} {relaxed} {injectedJS} {injectedCSS}/>
 		</section>
 	</SplitPane>
 </div>

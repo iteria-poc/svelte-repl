@@ -1,5 +1,5 @@
 <script>
-	import { onMount, getContext } from 'svelte';
+	import { onMount, getContext, createEventDispatcher } from 'svelte';
 	import getLocationFromStack from './getLocationFromStack.js';
 	import SplitPane from '../SplitPane.svelte';
 	import PaneWithPanel from './PaneWithPanel.svelte';
@@ -14,6 +14,7 @@
 	let logs = [];
 	let log_group_stack = [];
 	let current_log_group = logs;
+	const dispatch = createEventDispatcher();
 
 	export function setProp(prop, value) {
 		if (!proxy) return;
@@ -77,6 +78,24 @@
 		iframe.addEventListener('load', () => {
 			proxy.handle_links();
 			ready = true;
+			if(iframe && iframe.contentWindow){
+				iframe.contentWindow.addEventListener('pointermove', (event) => {
+					dispatch('pointerMoved', {
+						iframe,
+						target: event.target,
+						event,
+						...(event.target && event.target.__svelte_meta?event.target.__svelte_meta:{})
+					});
+				});
+				iframe.contentWindow.addEventListener('pointerout', (event) => {
+					dispatch('pointerMoved', {
+						iframe,
+						target: event.target,
+						event,
+						loc: null
+					});
+				});
+			}
 		});
 
 
