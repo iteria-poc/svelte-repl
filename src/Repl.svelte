@@ -52,7 +52,6 @@ import calculatePosition from './helpers/calculatePosition';
 		const { name, type } = $selected || {};
 
 		components.set(data.components);
-		console.log(data);
 
 		const matched_component = data.components.find(file => file.name === name && file.type === type);
 		selected.set(matched_component || data.components[0]);
