@@ -52,6 +52,7 @@ import calculatePosition from './helpers/calculatePosition';
 		const { name, type } = $selected || {};
 
 		components.set(data.components);
+		console.log(data);
 
 		const matched_component = data.components.find(file => file.name === name && file.type === type);
 		selected.set(matched_component || data.components[0]);
@@ -230,9 +231,6 @@ import calculatePosition from './helpers/calculatePosition';
 </style>
 
 <div class="container" class:orientation>
-	{#if eventDetail}
-		<Tippy {...calculatePosition(eventDetail)} text={calculateText(eventDetail)} />
-	{/if}
 	<SplitPane
 		type="{orientation === 'rows' ? 'vertical' : 'horizontal'}"
 		pos="{fixed ? fixedPos : orientation === 'rows' ? 50 : 60}"
@@ -244,7 +242,7 @@ import calculatePosition from './helpers/calculatePosition';
 		</section>
 
 		<section slot=b style='height: 100%;'>
-			<Output on:pointerMoved={e => (eventDetail = e.detail)} {svelteUrl} {workersUrl} {status} {embedded} {relaxed} {injectedJS} {injectedCSS}/>
+			<Output on:hover {svelteUrl} {workersUrl} {status} {embedded} {relaxed} {injectedJS} {injectedCSS}/>
 		</section>
 	</SplitPane>
 </div>

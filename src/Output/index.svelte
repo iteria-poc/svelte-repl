@@ -156,7 +156,7 @@
 		{relaxed}
 		{injectedJS}
 		{injectedCSS}
-		on:pointerMoved
+		on:hover
 	/>
 </div>
 

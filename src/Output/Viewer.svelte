@@ -80,7 +80,7 @@
 			ready = true;
 			if(iframe && iframe.contentWindow){
 				iframe.contentWindow.addEventListener('pointermove', (event) => {
-					dispatch('pointerMoved', {
+					dispatch('hover', {
 						iframe,
 						target: event.target,
 						event,
@@ -88,7 +88,7 @@
 					});
 				});
 				iframe.contentWindow.addEventListener('pointerout', (event) => {
-					dispatch('pointerMoved', {
+					dispatch('hover', {
 						iframe,
 						target: event.target,
 						event,
