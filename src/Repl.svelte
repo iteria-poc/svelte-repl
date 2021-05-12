@@ -7,9 +7,6 @@
 	import Output from './Output/index.svelte';
 	import Bundler from './Bundler.js';
 	import { is_browser } from './env.js';
-	import Tippy from './Tippy.svelte';
-import calculateText from './helpers/calculateText';
-import calculatePosition from './helpers/calculatePosition';
 
 	export let workersUrl;
 	export let packagesUrl = 'https://unpkg.com';
@@ -214,7 +211,7 @@ import calculatePosition from './helpers/calculatePosition';
 		box-sizing: border-box;
 	}
 
-	.container :global(section) > :global(*):first-child {
+	.container :global(section > *:first-child) {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -223,7 +220,7 @@ import calculatePosition from './helpers/calculatePosition';
 		box-sizing: border-box;
 	}
 
-	.container :global(section) > :global(*):last-child {
+	.container :global(section > *:last-child) {
 		width: 100%;
 		height: 100%;
 	}
