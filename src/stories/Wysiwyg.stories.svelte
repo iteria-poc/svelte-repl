@@ -1,32 +1,21 @@
 <script>
+  import { Meta, Template, Story } from "@storybook/addon-svelte-csf";
   import { onMount } from "svelte";
-  import Repl from "./Repl.svelte";
+  import Repl from "../Repl.svelte";
   import "@iteria-app/wysiwyg/public/export";
-  import { getBoxComponent } from "./stories/helpers/getComponentSource";
-  import { getTagSource } from "./stories/helpers/getTagSource";
+  import { getBoxComponent } from "./helpers/getComponentSource";
+  import { getTagSource } from "./helpers/getTagSource";
 
   let replRef;
   let wysiwygMode = "inspecting";
   let update;
   let win;
 
-  const fastHead =
-    '<svelte:head><script type="module" src="https://unpkg.com/@microsoft/fast-components">' +
-    "<" +
-    "/script></svelte:head>";
   const components = [
     {
       name: "App",
       type: "svelte",
-      source:
-        fastHead +
-        `
-		  <fast-design-system-provider use-defaults>
-			<fast-text-field></fast-text-field>
-			<!--<fast-data-grid></fast-data-grid>-->
-		  </fast-design-system-provider>
-		  ` +
-        getBoxComponent("Box"),
+      source: getBoxComponent("Box"),
     },
     {
       name: "Nested",
@@ -71,7 +60,6 @@
         (c) => c.name === name && c.type === type
       );
       const { source } = component;
-      console.log("clone", sourceLocation);
       const elementSource = getTagSource(source, sourceLocation.char);
       if (elementSource) {
         const srcBefore = source.slice(0, elementSource.start);
@@ -84,9 +72,7 @@
     }
   }
 
-  function clone(event) {
-    console.log("App.svelte clone", event);
-    // TODO <fast-data-grid> event.detail?.dialogInsertField({ tooltipText: 'Insert Field', intro })
+  function clone() {
     if (sourceLocation) {
       let type = "svelte";
       const name = sourceLocation.file.replace(/.\w+$/, (match) => {
@@ -97,7 +83,7 @@
         (c) => c.name === name && c.type === type
       );
       const { source } = component;
-      console.log("clone", sourceLocation);
+      console.log(sourceLocation);
       const elementSource = getTagSource(source, sourceLocation.char);
       if (elementSource) {
         const codeBefore = source.slice(0, elementSource.end);
@@ -110,41 +96,8 @@
     }
   }
 
-  const widgetMeta = {
-    "FAST-TEXT-FIELD": [
-      {
-        name: "label",
-        title: "Label",
-        description: "",
-        required: false,
-        type: "string",
-        //TODO messageId: 'TODO'
-      },
-      {
-        name: "placeholder",
-        title: "Placeholder",
-        description:
-          "Sets the placeholder value of the element, generally used to provide a hint to the user",
-        required: false,
-        type: "string",
-        //TODO messageId: 'TODO'
-      },
-      {
-        name: "required",
-        title: "Required",
-        description:
-          "Require the field to be completed prior to form submission",
-        type: "boolean",
-        default: false,
-        required: false,
-      },
-    ],
-  };
-  const widgetTags = Object.keys(widgetMeta);
-
-  function onMouseOver(event) {
-    console.log("<App hover", event);
-    const { hoverElement, inspect } = event.detail;
+  function onInspect(event) {
+    const { target, callback } = event.detail;
 
     const allowTags = [
       "MAIN",
@@ -154,20 +107,18 @@
       "DIV",
       "SPAN",
       "BUTTON",
-      ...widgetTags,
     ];
-    const display = allowTags.find((t) => hoverElement.tagName === t);
+    const display = allowTags.find((t) => target.tagName === t);
     const disabled =
-      hoverElement.tagName === "SPAN" &&
-      hoverElement.classList.contains("nested");
+      target.tagName === "SPAN" && target.classList.contains("nested");
 
     if (display) {
-      hoverElement.removeEventListener("click", (e) =>
-        clickElement(e, hoverElement, inspect)
+      target.removeEventListener("click", (e) =>
+        clickElement(e, target, callback)
       );
-      hoverElement.addEventListener(
+      target.addEventListener(
         "click",
-        (e) => clickElement(e, hoverElement, inspect),
+        (e) => clickElement(e, target, callback),
         { once: true }
       );
     }
@@ -183,21 +134,7 @@
     } else {
       tooltipText = "";
     }
-    const icon =
-      ["SPAN", "LABEL"].indexOf(hoverElement.tagName) > -1
-        ? "edit"
-        : "settings";
-    inspect({ display, tooltipText, disabled, icon });
-  }
-
-  function onEditing(event) {
-    const { editingElement, dialogWidgetFields } = event.detail;
-
-    const widgetFound = widgetTags.find((t) => editingElement.tagName === t);
-    if (widgetFound) {
-      const fields = widgetMeta[editingElement.tagName];
-      dialogWidgetFields({ tooltipText: "Widget Field", fields });
-    }
+    callback({ display, tooltipText, disabled });
   }
 
   function clickElement(event, target, callback) {
@@ -212,29 +149,56 @@
 
 </script>
 
-<div class="repl-wrapper" use:listenForPointerMove>
-  <Repl
-    bind:this={replRef}
-    on:hover={replHover}
-    bind:update
-    workersUrl="workers"
-    embedded
-    relaxed
-  />
+<Meta
+  title="Example/Wysiwyg"
+  component={Repl}
+  argTypes={{
+    // label: { control: "text" },
+    // primary: { control: "boolean" },
+    // backgroundColor: { control: "color" },
+    // size: {
+    //     control: { type: "select", options: ["small", "medium", "large"] },
+    // },
+    // onClick: { action: "onClick" },
+  }}
+/>
+
+<Template let:args>
+  <div class="repl-wrapper" use:listenForPointerMove>
+    <Repl
+      bind:this={replRef}
+      on:hover={replHover}
+      bind:update
+      workersUrl="workers"
+      embedded
+      relaxed
+    />
+  </div>
   {#if win}
     <iteria-wysiwyg
       {win}
       on:clone={clone}
       on:delete={del}
-      on:hover={onMouseOver}
+      on:inspect={onInspect}
       on:showsource={console.log}
-      on:editing={onEditing}
+      on:modechange={console.log}
     />
   {/if}
-</div>
+</Template>
+
+<Story name="Primary" args={{}} />
 
 <style>
-	.repl-wrapper {
-		height: 100vh;
-	}
+  :root {
+    height: 100%;
+  }
+  :global(body) {
+    height: 100%;
+  }
+  .repl-wrapper {
+    width: 100%;
+    min-height: 50vh;
+    height: 100%;
+  }
+
 </style>
